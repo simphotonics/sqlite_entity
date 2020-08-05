@@ -15,5 +15,5 @@ extension ForeignKeyActionValue on ForeignKeyAction {
         ForeignKeyAction.CASCADE: 'CASCADE',
         ForeignKeyAction.SET_NULL: 'SET_NULL',
         ForeignKeyAction.SET_DEFAULT: 'SET_DEFAULT',
-      }[this]!;
+      }[this];
 }

@@ -15,5 +15,5 @@ extension ForeignKeyConstraintValue on ForeignKeyConstraint {
         ForeignKeyConstraint.INITIALLY_DEFERRABLE: 'INITIALLY_DEFERRABLE',
         ForeignKeyConstraint.INITIALLY_DEFERRED: 'INITIALLY_DEFERRED',
         ForeignKeyConstraint.INITIALLY_IMMEDIATE: 'INITIALLY_IMMEDIATE',
-      }[this]!;
+      }[this];
 }

@@ -1,19 +1,17 @@
 import 'package:meta/meta.dart';
 
-import 'anchored_column.dart';
-import 'foreign_key_action.dart';
-import 'foreign_key_constraint.dart';
-import 'model.dart';
-import 'sqlite_type.dart';
+import '../entities/foreign_key_action.dart';
+import '../entities/foreign_key_constraint.dart';
+import '../entities/sqlite_type.dart';
 
-/// Sqlite Foreign key entity used in class [ModelDefinition].
+import 'revivable_anchored_column.dart';
+
 ///
-/// Note: [C] must refer to the data model that is defined the
-/// class extending [ModelDefinition].
-class ForeignKey<C extends Model, P extends Model, T extends SqliteType> {
+///
+class RevivableForeignKey<T extends SqliteType> {
   /// Creates a new ForeignKey object.
   /// The lists [childColumns] and [parentColumns] should not be empty.
-  const ForeignKey({
+  const RevivableForeignKey({
     @required this.childColumn,
     @required this.parentColumn,
     this.onDelete = ForeignKeyAction.CASCADE,
@@ -22,10 +20,10 @@ class ForeignKey<C extends Model, P extends Model, T extends SqliteType> {
   });
 
   /// Child column(s)
-  final AnchoredColumn<C, T> childColumn;
+  final RevivableAnchoredColumn<T> childColumn;
 
   /// Referenced (or parent) column(s).
-  final AnchoredColumn<P, T> parentColumn;
+  final RevivableAnchoredColumn<T> parentColumn;
 
   /// ForeignKeyAction taken on updating
   /// the parent column(s).
@@ -39,10 +37,10 @@ class ForeignKey<C extends Model, P extends Model, T extends SqliteType> {
   final Set<ForeignKeyConstraint> constraints;
 
   /// Returns the parent table.
-  String get parentTable => parentColumn.modelType.toString();
+  String get parentTable => parentColumn.table;
 
   /// Returns the child table.
-  String get childTable => childColumn.modelType.toString();
+  String get childTable => childColumn.table;
 
   @override
   String toString() {

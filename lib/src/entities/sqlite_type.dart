@@ -1,27 +1,31 @@
 import 'package:meta/meta.dart';
-import 'package:sqlite_entity/src/entities/replicator.dart';
 
-// /// Base class of an Sqlite compatible type.
-// abstract class SqliteType {
-//   const SqliteType._();
+import 'replicator.dart';
 
-//   /// Returns source code representing [this].
-//   String get sourceCode;
-// }
-
-/// Wrapper class that wraps the Dart types:
-/// [int], [bool], [double], and [String].
+/// Wrapper class that wraps the types:
+/// * `int`, `bool`, `double`, or `String`.
 class SqliteType<T> implements Replicator {
   const SqliteType._(this.value); // : super._();
 
-  /// Sqlite value of type [T].
+  /// Value of type:
+  /// * `int`, `bool`, `double`, or `String`.
   final T value;
 
   @override
   String get sourceCode => '${runtimeType}($value)';
 
+  /// Returns a `String` representation of the
+  /// wrapped `value`.
   @override
   String toString() => value.toString();
+
+  /// Converts the type argument `T`
+  /// to a valid Sqlite compatible type that can be
+  /// used in queries.
+  static String mappedType<T extends SqliteType>() {
+    if (T == Boolean) return 'INTEGER';
+    return T.toString().toUpperCase();
+  }
 }
 
 /// SqliteType that wraps an [int].
@@ -29,8 +33,8 @@ class SqliteType<T> implements Replicator {
 class Integer extends SqliteType<int> {
   const Integer(int value) : super._(value);
 
-  /// Returns the type argument of [SqliteType].
-  static Type get type => int;
+  /// Returns the type argument of `Integer`.
+  static Type get typeArg => int;
 }
 
 /// SqliteType that wraps a [bool].
@@ -38,8 +42,8 @@ class Integer extends SqliteType<int> {
 class Boolean extends SqliteType<bool> {
   const Boolean(bool value) : super._(value);
 
-  /// Returns the type argument of [SqliteType].
-  static Type get type => bool;
+  /// Returns the type argument of `Boolean`.
+  static Type get typeArg => bool;
 }
 
 /// SqliteType that wraps a [String].
@@ -49,8 +53,8 @@ class Text extends SqliteType<String> {
   @override
   String get sourceCode => '${runtimeType}(\'$value\')';
 
-  /// Returns the type argument of [SqliteType].
-  static Type get type => String;
+  /// Returns the type argument of `Text`.
+  static Type get typeArg => String;
 }
 
 /// SqliteType that wraps a [double].
@@ -58,6 +62,6 @@ class Text extends SqliteType<String> {
 class Real extends SqliteType<double> {
   const Real(double value) : super._(value);
 
-  /// Returns the type argument of [SqliteType].
-  static Type get type => double;
+  /// Returns the type argument of `Real`.
+  static Type get typeArg => double;
 }

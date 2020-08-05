@@ -2,7 +2,7 @@ include: package:pedantic/analysis_options.yaml
 analyzer:
   enable-experiment:
     - extension-methods
-    - non-nullable
+    # non-nullable
   #exclude: [build/**]
   #strong-mode:
     #implicit-casts: false

@@ -1,7 +1,9 @@
-import 'package:sqlite_entity/src/entities/anchored_column.dart';
-import 'package:sqlite_entity/src/entities/expr_format.dart';
-import 'package:sqlite_entity/src/entities/model.dart';
-import 'package:sqlite_entity/src/entities/sqlite_type.dart';
+import 'package:meta/meta.dart';
+
+import 'anchored_column.dart';
+import 'expr_format.dart';
+import 'model.dart';
+import 'sqlite_type.dart';
 
 /// Base class for composing expressions used in
 /// Sqlite CHECK constraints.
@@ -41,9 +43,9 @@ class ColumnLiteral<M extends Model, T extends SqliteType>
 class ColumnExpr<M extends Model, T extends SqliteType>
     extends SqliteExpr<M, T> {
   const ColumnExpr({
-    required this.left,
-    required this.right,
-    required this.operatorName,
+    @required this.left,
+    @required this.right,
+    @required this.operatorName,
     this.exprFormat = ExprFormat.FUNCTION,
   });
 
@@ -89,9 +91,9 @@ class NotEqual<M extends Model, T extends SqliteType> extends ColumnExpr<M, T> {
 /// The right operant is of type [SqliteExpr].
 class Expr<M extends Model, T extends SqliteType> extends SqliteExpr<M, T> {
   const Expr({
-    required this.left,
-    required this.right,
-    required this.operatorName,
+    @required this.left,
+    @required this.right,
+    @required this.operatorName,
     this.exprFormat = ExprFormat.FUNCTION,
   });
 
@@ -115,9 +117,9 @@ class Expr<M extends Model, T extends SqliteType> extends SqliteExpr<M, T> {
 /// operands and operator/function are of type [String].
 class StringExpression {
   const StringExpression(
-      {required this.left,
-      required this.right,
-      required this.operatorName,
+      {@required this.left,
+      @required this.right,
+      @required this.operatorName,
       this.exprFormat = ExprFormat.FUNCTION});
 
   /// Left operand.

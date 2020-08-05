@@ -16,5 +16,5 @@ extension ConstraintValue on Constraint {
         Constraint.AUTOINCREMENT: 'AUTOINCREMENT',
         Constraint.NOT_NULL: 'NOT_NULL',
         Constraint.UNIQUE: 'UNIQUE',
-      }[this]!;
+      }[this];
 }

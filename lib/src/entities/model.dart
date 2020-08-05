@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Base class of a data model.
 abstract class Model {
   const Model();
@@ -31,7 +33,7 @@ abstract class TimeStampedModel extends Model {
 /// Used with objects that have a specific duration (e.g. a tennis match).
 abstract class TimeTrackableModel extends Model {
   const TimeTrackableModel({
-    required this.start,
+    @required this.start,
     this.end,
   });
 
@@ -39,7 +41,7 @@ abstract class TimeTrackableModel extends Model {
   final int start;
 
   /// Object completion time `microSecondsSinceEpoch`.
-  final int? end;
+  final int end;
 
   /// Returns the start time as [DateTime].
   DateTime get startTime => DateTime.fromMicrosecondsSinceEpoch(start);
@@ -47,8 +49,8 @@ abstract class TimeTrackableModel extends Model {
   /// Returns the end time as [DateTime].
   ///
   /// Returns `null` if `end` is `null`.
-  DateTime? get endTime =>
-      (end == null) ? null : DateTime.fromMicrosecondsSinceEpoch(end!);
+  DateTime get endTime =>
+      (end == null) ? null : DateTime.fromMicrosecondsSinceEpoch(end);
 
   /// Returns the duration between start time and end time.
   ///
@@ -56,7 +58,7 @@ abstract class TimeTrackableModel extends Model {
   ///   end has not been set yet.
   Duration get duration => (end == null)
       ? DateTime.now().difference(startTime)
-      : endTime!.difference(startTime);
+      : endTime.difference(startTime);
 
   @override
   String toString() {

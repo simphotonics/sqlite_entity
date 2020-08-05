@@ -1,10 +1,10 @@
-import 'package:sqlite_entity/src/entities/constraint.dart';
-import 'package:sqlite_entity/src/entities/replicator.dart';
-import 'package:sqlite_entity/src/entities/sqlite_type.dart';
+import 'constraint.dart';
+import 'replicator.dart';
+import 'sqlite_type.dart';
 
 /// Class used to define Sqlite columns and the corresponding data model fields.
 class Column<T extends SqliteType> implements Replicator {
-  /// Generic constructor, only the following type parameters are supported:
+  /// Generic constructor, only the following type arguments are supported:
   /// * [Integer], [Boolean], [Text], and [Real].
   const Column({
     this.constraints = const <Constraint>{},
@@ -17,7 +17,7 @@ class Column<T extends SqliteType> implements Replicator {
   final Set<Constraint> constraints;
 
   /// Default value specified when defining the Sqlite column.
-  final T? defaultValue;
+  final T defaultValue;
 
   /// Optional [name]. Has to be a valid Dart identifier.
   final String name;
@@ -40,35 +40,34 @@ class Column<T extends SqliteType> implements Replicator {
   }
 
   /// Returns the type argument of `T extends SqliteType`.
-  /// * Valid types are: `int`, `String`, `bool`, `double`.
+  /// * Valid type args are: `int`, `String`, `bool`, `double`.
   Type get typeArgument {
     switch (T) {
       case Integer:
-        return Integer.type;
+        return Integer.typeArg;
         break;
       case Text:
-        return Text.type;
+        return Text.typeArg;
         break;
       case Real:
-        return Real.type;
+        return Real.typeArg;
         break;
       case Boolean:
-        return Boolean.type;
+        return Boolean.typeArg;
       default:
         return Null;
     }
   }
 
-  /// Returns the type parameter of [this].
+  /// Returns the type argument of `this`.
   Type get type => T;
 
-  /// Returns a [String] mapping [T] to an Sqlite compatible type.
-  String get sqliteType {
-    if (T == Boolean) return 'INTEGER';
-    return T.toString().toUpperCase();
+  /// Returns a `String` mapping [T] to an Sqlite compatible type.
+  String get mappedType {
+    return SqliteType.mappedType<T>();
   }
 
-  /// Returns `true` if the set [constraints] contains
+  /// Returns `true` if the `Set` [constraints] contains
   /// `Constraint.PRIMARY_KEY`.
   bool get isPrimary {
     return constraints.contains(Constraint.PRIMARY_KEY);
@@ -80,13 +79,13 @@ class Column<T extends SqliteType> implements Replicator {
     return constraints.contains(Constraint.UNIQUE);
   }
 
-  /// Returns a new instance of [Column], the (non-null)
+  /// Returns a new instance of `Column`, the (non-null)
   /// parameters overriding old field values.
   Column<T> overrideWith({
-    Set<Constraint>? constraints,
-    T? defaultValue,
-    String? name,
-    String? doc,
+    Set<Constraint> constraints,
+    T defaultValue,
+    String name,
+    String doc,
   }) {
     return Column<T>(
       constraints: constraints ?? this.constraints,
@@ -99,8 +98,8 @@ class Column<T extends SqliteType> implements Replicator {
   /// Returns the class declaration used by the getter [sourceCode].
   String get classDeclaration => 'Column<$T>(';
 
-  /// Returns a [String] containing source code
-  /// representing [this].
+  /// Returns a `String` containing source code
+  /// representing `this`.
   @override
   String get sourceCode {
     final b = StringBuffer();
@@ -136,7 +135,7 @@ class Column<T extends SqliteType> implements Replicator {
   @override
   String toString() =>
       name +
-      sqliteType +
+      mappedType +
       constraints.fold<String>(
           '', (prev, current) => prev + current.stringValue + ' ');
 }

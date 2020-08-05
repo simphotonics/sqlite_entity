@@ -1,4 +1,4 @@
-import 'package:sqlite_entity/src/entities/model.dart';
+import 'model.dart';
 
 /// Base of a class that contains the Sqlite column definitions
 /// of model [M].
