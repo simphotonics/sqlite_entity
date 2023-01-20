@@ -1,27 +1,31 @@
 import 'package:ansicolor/ansicolor.dart';
-import 'package:meta/meta.dart';
-import 'package:sqlite_entities/sqlite_entities.dart';
+import 'package:sqlite_entity/sqlite_entity.dart';
 
 class TeamDefinition extends ModelDefinition {
-  const TeamDefinition();
 
-  final id = const Column<Integer>(constraints: {
-    Constraint.PRIMARY_KEY,
-  });
+  final id = Column<int>(
+    constraints: {
+      Constraint.PRIMARY_KEY,
+    },
+      defaultValue: 0,
+  );
 
-  final pid1 = const Column<Integer>(
+  final pid1 = Column<int>(
     constraints: {
       Constraint.NOT_NULL,
     },
+    defaultValue: 0,
   );
 
-  final test = const Column<Boolean>(
+  final test = const Column<bool>(
     constraints: {Constraint.PRIMARY_KEY},
+    defaultValue: false,
   );
 
-  final pid2 = const Column<Integer>(constraints: {
+  final pid2 = const Column<int>(constraints: {
     Constraint.NOT_NULL,
-  });
+    },
+    defaultValue: 1);
 
   /// Foreign Key
   final foreignKey1 = const ForeignKey(
@@ -44,7 +48,7 @@ class TeamDefinition extends ModelDefinition {
     ),
     Expr(
         left: ColumnLiteral(Team.$id),
-        right: Literal(Integer(187)),
+        right: Literal(int(187)),
         operatorName: '!=',
         exprFormat: ExprFormat.OPERATOR),
   ]);
@@ -61,11 +65,10 @@ class TeamDefinition extends ModelDefinition {
 
 class Team extends Model {
   const Team(
-      {
-      @required this.id,
-      @required this.pid1,
-      @required this.test,
-      @required this.pid2});
+      {required this.id,
+      required this.pid1,
+      required this.test,
+      required this.pid2});
 
   /// Converts a [Map<String,dynamic>] to a [Team].
   Team.fromMap(Map<String, dynamic> map)
@@ -83,7 +86,7 @@ class Team extends Model {
   final int pid2;
 
   /// Column: Team.id.
-  static const $id = AnchoredColumn<Team, Integer>(
+  static const $id = AnchoredColumn<Team, int>(
     constraints: {
       Constraint.PRIMARY_KEY,
     },
@@ -91,7 +94,7 @@ class Team extends Model {
   );
 
   /// Column: Team.pid1.
-  static const $pid1 = AnchoredColumn<Team, Integer>(
+  static const $pid1 = AnchoredColumn<Team, int>(
     constraints: {
       Constraint.NOT_NULL,
     },
@@ -107,7 +110,7 @@ class Team extends Model {
   );
 
   /// Column: Team.pid2.
-  static const $pid2 = AnchoredColumn<Team, Integer>(
+  static const $pid2 = AnchoredColumn<Team, int>(
     constraints: {
       Constraint.NOT_NULL,
     },
@@ -128,8 +131,7 @@ class Team extends Model {
   /// Creates a [Map<String, dynamic>] representing a [Team]
   /// object without a primary key. The primary key is assigned by the
   /// database during insertion.
-  static Map<String, dynamic> initMap(
-      {@required int pid1, @required int pid2}) {
+  static Map<String, dynamic> initMap({required int pid1, required int pid2}) {
     return {
       'pid1': pid1,
       'pid2': pid2,
@@ -139,11 +141,10 @@ class Team extends Model {
 
 class Player extends Model {
   const Player(
-      {
-      @required this.id,
-      @required this.isActive,
-      @required this.firstName,
-      @required this.timeStamp});
+      {required this.id,
+      required this.isActive,
+      required this.firstName,
+      required this.timeStamp});
 
   /// Converts a [Map<String,dynamic>] to a [Player].
   Player.fromMap(Map<String, dynamic> map)
@@ -163,11 +164,11 @@ class Player extends Model {
   final int timeStamp;
 
   /// Column: Player.id.
-  static const $id = AnchoredColumn<Player, Integer>(
+  static const $id = AnchoredColumn<Player, int>(
     constraints: {
       Constraint.PRIMARY_KEY,
     },
-    defaultValue: Integer(99),
+    defaultValue: int(99),
     name: 'id',
   );
 
@@ -184,7 +185,7 @@ class Player extends Model {
   );
 
   /// Column: Player.timeStamp.
-  static const $timeStamp = AnchoredColumn<Player, Integer>(
+  static const $timeStamp = AnchoredColumn<Player, int>(
     constraints: {
       Constraint.NOT_NULL,
     },
@@ -206,9 +207,9 @@ class Player extends Model {
   /// object without a primary key. The primary key is assigned by the
   /// database during insertion.
   static Map<String, dynamic> initMap(
-      {@required bool isActive,
-      @required String firstName,
-      @required int timeStamp}) {
+      {required bool isActive,
+      required String firstName,
+      required int timeStamp}) {
     return {
       'isActive': isActive,
       'firstName': firstName,
