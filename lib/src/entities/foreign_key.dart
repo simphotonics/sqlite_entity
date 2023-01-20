@@ -1,57 +1,35 @@
-import 'package:meta/meta.dart';
-
-import 'anchored_column.dart';
+import 'bound_column.dart';
 import 'foreign_key_action.dart';
-import 'foreign_key_constraint.dart';
-import 'model.dart';
-import 'sqlite_type.dart';
 
-/// Sqlite Foreign key entity used in class [ModelDefinition].
-///
-/// Note: [C] must refer to the data model that is defined the
-/// class extending [ModelDefinition].
-class ForeignKey<C extends Model, P extends Model, T extends SqliteType> {
-  /// Creates a new ForeignKey object.
-  /// The lists [childColumns] and [parentColumns] should not be empty.
-  const ForeignKey({
-    @required this.childColumn,
-    @required this.parentColumn,
-    this.onDelete = ForeignKeyAction.CASCADE,
-    this.onUpdate = ForeignKeyAction.CASCADE,
-    this.constraints = const <ForeignKeyConstraint>{},
-  });
-
-  /// Child column(s)
-  final AnchoredColumn<C, T> childColumn;
+/// Sqlite Foreign key concept  used in class [Table].
+class ForeignKey {
+  /// Column(s)
+  final List<BoundColumn> childColumns;
 
   /// Referenced (or parent) column(s).
-  final AnchoredColumn<P, T> parentColumn;
+  final List<BoundColumn> parentColumns;
 
-  /// ForeignKeyAction taken on updating
+  /// Foreign key action taken on updating
   /// the parent column(s).
   final ForeignKeyAction onUpdate;
 
-  /// ForeignKeyAction taken on deleting
+  /// Foreign key action taken on deleting
   /// the parent column(s).
   final ForeignKeyAction onDelete;
 
-  /// ForeignKey constraints.
-  final Set<ForeignKeyConstraint> constraints;
-
-  /// Returns the parent table.
-  String get parentTable => parentColumn.modelType.toString();
-
-  /// Returns the child table.
-  String get childTable => childColumn.modelType.toString();
+  const ForeignKey({
+    required this.childColumns,
+    required this.parentColumns,
+    this.onDelete = ForeignKeyAction.CASCADE,
+    this.onUpdate = ForeignKeyAction.CASCADE,
+  });
 
   @override
   String toString() {
-    final _constraints = constraints.fold<String>(
-        '', (prev, current) => prev + current.stringValue + ' ');
-
-    return 'FOREIGN KEY(${childColumn.name}) REFERENCES '
-        '$parentTable(${parentColumn.name}) '
-        '$_constraints '
-        'ON UPDATE $onUpdate ON DELETE $onDelete';
+    return ''' ForeignKey: childColumns: $childColumns,
+               parentColumns: $parentColumns,
+               onUpdate: $onUpdate,
+               onDelete: $onDelete
+    ''';
   }
 }

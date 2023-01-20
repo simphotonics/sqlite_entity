@@ -1,14 +1,10 @@
-//import 'package:build/build.dart' show AssetId;
-
-import 'package:meta/meta.dart';
-
 /// Class holding dependency information of table [child].
 /// Table [child] has foreign keys referencing columns in tables [parents].
 class Dependency {
   /// Create the dependency object of table [child].
   const Dependency({
-    @required this.child,
-    @required this.parents,
+    required this.child,
+    required this.parents,
   });
 
   /// Table name
