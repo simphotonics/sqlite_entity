@@ -1,12 +1,1 @@
-include: package:pedantic/analysis_options.yaml
-analyzer:
-  enable-experiment:
-    - extension-methods
-    # non-nullable
-  #exclude: [build/**]
-  #strong-mode:
-    #implicit-casts: false
-
-linter:
-  rules:
-    - camel_case_types
+include: package:lints/recommended.yaml
