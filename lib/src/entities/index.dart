@@ -1,45 +1,76 @@
-import 'package:exception_templates/exception_templates.dart';
-import 'package:meta/meta.dart';
+import 'column.dart';
 
-import 'model.dart';
-import 'sqlite_expressions.dart';
+/// Specifies an index.
+class Index {
+  /// List of indexed columns
+  final List<Column> columns;
 
-/// Defines an Sqlite index.
-class Index<M extends Model> {
-  const Index({
-    @required this.expressions,
-    this.isUnique = false,
-    this.name = '',
-  });
-
-  /// A set of Sqlite expressions.
-  /// Use [ColumnLiteral] to specify a column.
-  final List<ColumnExpr<M, dynamic>> expressions;
-
-  /// Set this flag to true to generate a UNIQUE index.
   final bool isUnique;
 
-  /// Name of index.
-  final String name;
+  /// To be used as a final variable within a [Table] class declaration.
+  /// Usage:
+  ///
+  /// ```
+  /// class _PlayerTable{
+  ///   static const id = Column<int>(constraints: [
+  ///     Constraint.PRIMARY_KEY,
+  ///   ]);
+  ///
+  ///   static const pid1 = Column<int>();
+  ///   static const pid2 = Column<int>();
+  ///
+  ///   final index = Index(indexedColumns[
+  ///       pid1,
+  ///       pid2,
+  ///     ],
+  ///     isUnique = true,
+  ///   );
+  ///
+  /// }
+  /// ```
+  const Index({
+    required this.columns,
+    this.isUnique = false,
+  });
+}
 
-  /// Name of table.
-  String get table => M.toString();
+/// Specifies an index. To be used within the declaration of a [Table] class.
+class ExpressionIndex {
+  /// List of column expressions. The columns should belong to the
+  /// encompassing table.
+  /// Example:
+  /// ```
+  /// ['min($pid1,$pid2)','max($pid1, $pid2)']
+  ///
+  /// ```
+  final List<String> expressions;
 
-  /// Returns a [String] containing the Sqlite command to create the index.
-  @override
-  String toString() {
-    final b = StringBuffer();
-    b.write('CREATE ');
-    if (isUnique) {
-      b.write('UNIQUE ');
-    }
-    b.write('INDEX ');
-    if (isValidIdentifier(name)) {
-      b.write('$name ');
-    }
-    b.write('ON ${table}(');
-    b.writeAll(expressions, ', ');
-    b.write(');');
-    return b.toString();
-  }
+  /// Set to true to declare a UNIQUE INDEX.
+  final bool isUnique;
+
+  /// To be used within a [Table] declaration.
+  /// Usage:
+  ///
+  /// ```
+  /// class _PlayerTable{
+  ///   static const id = Column<int>(constraints: [
+  ///     Constraint.PRIMARY_KEY,
+  ///   ]);
+  ///
+  ///   static const pid1 = Column<int>();
+  ///   static const pid2 = Column<int>();
+  ///
+  ///   final index = ExpressionIndex(expressions: [
+  ///       'min($pid1,$pid2)',
+  ///       'max($pid1, $pid2)'
+  ///     ],
+  ///     isUnique : true,
+  ///   );
+  ///
+  /// }
+  /// ```
+  const ExpressionIndex({
+    required this.expressions,
+    this.isUnique = false,
+  });
 }
