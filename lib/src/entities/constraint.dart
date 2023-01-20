@@ -1,26 +1,42 @@
-import 'package:generic_enum/generic_enum.dart';
+import 'keyword.dart';
 
-part 'constraint.g.dart';
+/// Enumeration symbolizing an Sqlite constraint.
+/// Instances: ASC, DESC, PRIMARY_KEY, NOT_NULL, UNIQUE.
+///
+/// Note: Use the getter `keyword` to retrieve the string representing
+/// the Sqlite constraint.
+enum Constraint implements Keyword {
+  ASC('ASC'),
+  DESC('DESC'),
+  PRIMARY_KEY('PRIMARY KEY'),
+  NOT_NULL('NOT NULL'),
+  UNIQUE('UNIQUE');
 
-/// Enumeration used to specify Sqlite constraints.
-/// when creating instances of [Column].
-@GenerateValueExtension()
-enum Constraint {
-  PRIMARY_KEY,
-  ASC,
-  DESC,
-  AUTOINCREMENT,
-  NOT_NULL,
-  UNIQUE,
+  const Constraint(this.keyword);
+
+  /// The Sqlite keyword associated with the instance.
+  final String keyword;
+
+  /// Returns `True` if the constraint is `Constraint.PRIMARY_KEY`.
+  bool get isPrimary => (this == PRIMARY_KEY);
+
+  /// Returns `True` if the constraint is `Constraint.UNIQUE`.
+  bool get isUnique => (this == UNIQUE);
+
+  /// Return `True` if the constraint is `Constraint.NOT_NULL`.
+  bool get isNotNull => (this == NOT_NULL);
 }
 
-extension ConstraintMethods on Constraint {
-  /// Returns true if [this] == PRIMARY_KEY.
-  bool get isPrimary => (this == Constraint.PRIMARY_KEY);
+class CheckConstraint {
+  /// Sqlite check constraint.
+  ///
+  /// Has to be a valid sqlite expression.
+  /// Examples (age, id1, id2 are existing columns):
+  /// ```
+  /// 'age > 21'
+  /// 'max(id1, id2) < 100'
+  /// ```
+  final String expression;
 
-  /// Returns true if [this] == UNIQUE.
-  bool get isUnique => (this == Constraint.UNIQUE);
-
-  /// Returns true if [this] == NOT_NULL.
-  bool get isNotNull => (this == Constraint.NOT_NULL);
+  const CheckConstraint(this.expression);
 }
