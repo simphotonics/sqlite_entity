@@ -119,7 +119,7 @@ main(List<String> args) {
 
 /// Creates source code representing a field of type [String] and name 'init'.
 Field _init(
-    {@required String tableName, @required Map<String, String> columnMap}) {
+    {required String tableName, required Map<String, String> columnMap}) {
   var buffer = QuoteBuffer();
 
   // Specify table name
