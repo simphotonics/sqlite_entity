@@ -1,6 +1,6 @@
 /// Implement this interface to generate classes that can
-/// generate source code representing themselves.
+/// generate source code representing [this].
 abstract class Replicator {
-  /// Returns source code replicating [this].
-  String get sourceCode;
+  /// Source code replicating this.
+  String replicate();
 }
