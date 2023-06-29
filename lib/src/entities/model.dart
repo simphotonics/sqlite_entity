@@ -60,6 +60,6 @@ abstract class TimeTrackableModel extends Model {
 
   @override
   String toString() {
-    return 'Creation time: ${startTime},  completion time: ${endTime} .';
+    return 'Creation time: $startTime,  completion time: $endTime .';
   }
 }

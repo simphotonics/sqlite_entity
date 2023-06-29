@@ -1,4 +1,5 @@
 import 'constraint.dart';
+import 'expression.dart';
 import 'replicator.dart';
 
 /// Sqlite column info.
@@ -14,31 +15,36 @@ class Column<T> implements Replicator {
   /// INTEGER, INTEGER, TEXT, and REAL.
   const Column({
     this.constraints = const {},
-    required this.defaultValue,
+    this.defaultValue,
+    this.checkConstraint = const Expr(),
   });
 
   /// Empty set or any of:
   ///
-  /// [SqliteConstraint.NOT_NULL],
+  /// [Constraint.notNull],
   ///
-  /// [SqliteConstraint.PRIMARY_KEY],
+  /// [Constraint.primaryKey],
   ///
-  /// [SqliteConstraint.UNIQUE].
+  /// [Constraint.unique].
   final Set<Constraint> constraints;
 
   /// Default value specified when defining the Sqlite column.
-  final T defaultValue;
+  final T? defaultValue;
+
+  /// A column level check constraint. The expression must include only
+  /// this column.
+  final Expr checkConstraint;
 
   bool isPrimary() {
-    return constraints.contains(Constraint.PRIMARY_KEY);
+    return constraints.contains(Constraint.primaryKey);
   }
 
   bool isUnique() {
-    return constraints.contains(Constraint.UNIQUE);
+    return constraints.contains(Constraint.unique);
   }
 
   bool isNotNull() {
-    return constraints.contains(Constraint.NOT_NULL);
+    return constraints.contains(Constraint.notNull);
   }
 
   @override
@@ -56,4 +62,20 @@ class Column<T> implements Replicator {
     b.writeln(')');
     return b.toString();
   }
+}
+
+enum ColumnType { virtual, stored }
+
+
+class GeneratedColumn<T> extends Column<T> {
+  /// Note: Generated columns may not specify a default value.
+  GeneratedColumn({
+    this.expr = const Expr(),
+    this.columnType = ColumnType.virtual,
+    super.constraints,
+    super.checkConstraint,
+  });
+
+  final Expr expr;
+  final ColumnType columnType;
 }

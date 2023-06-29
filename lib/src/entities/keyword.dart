@@ -1,5 +1,9 @@
 /// Provides the getter `keyword`.
-abstract class Keyword {
-  /// Returns the keyword associated with the instance.
+abstract interface class Keyword {
+  /// Returns the keyword associated with the enum instance.
   String get keyword;
-}
+
+  static const $in = 'IN';
+  static const where = 'WHERE';
+  static const deleteFrom = 'DELETE FROM';
+  }
