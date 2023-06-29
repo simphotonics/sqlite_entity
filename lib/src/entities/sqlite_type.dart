@@ -2,15 +2,16 @@ import 'keyword.dart';
 
 /// [GenericEnum] symbolizing valid Sqlite types.
 enum SqliteType implements Keyword {
-  INTEGER('INTEGER', int),
-  BOOL('INTEGER', bool),
-  REAL('REAL', double),
-  TEXT('TEXT', String);
+  integer('INTEGER', int),
+  integerBool('INTEGER', bool),
+  real('REAL', double),
+  text('TEXT', String);
 
   const SqliteType(this.keyword, this.type);
 
+  @override
   final String keyword;
 
-  /// Dart type associated with the Sqlite type. 
+  /// Dart type associated with the Sqlite type.
   final Type type;
 }
